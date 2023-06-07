@@ -15,15 +15,15 @@
             <div class="links">
                 <ul>
                     <a href="home.html"><button>Home</button></a>
-                    <a href="y17.html"> <button>Arrival & Departure</button></a>
-                    <a href="Vic.html"> <button>Visa & Population Trends</button></a>
+             <a href="y17.html"> <button>Arrival & Departure</button></a>
+             <a href="Vic.html"> <button>Visa & Population Trends</button></a>
                 </ul>
             </div>
         </nav>
         <hr>
     </section>
     <br>
-    <h1>Net Migration in Australia(2017) </h1>
+    <h1>Net Migration in Australia(2020) </h1>
     <p>
         <div class="buttons">
             <a href="y17.html"><button>2017</button></a>
@@ -72,7 +72,7 @@
         var path = d3.geoPath()
             .projection(projection);
 
-            d3.csv("y17.csv").then(function(data) {
+            d3.csv("y20.csv").then(function(data) {
                 var color = d3.scaleLinear()
   .domain([
     d3.min(data, function(d) { return parseFloat(d.value); }),
@@ -80,6 +80,12 @@
     d3.max(data, function(d) { return parseFloat(d.value); })
   ])
   .range(["lightgreen","yellow","red"]);
+
+
+
+  
+
+
 
 
             d3.json("aus_state.geojson").then(function(json) {
@@ -93,7 +99,7 @@
 
                         if (datastate == jsonstate) {
                             json.features[j].properties.value = datavalue;
-               
+                            break;
                         }
                     }
                 }
@@ -125,7 +131,6 @@
                             .style("opacity", 0);
                     });
 
-
                     svg.selectAll("text")  
     .data(json.features)
     .enter()
@@ -149,8 +154,6 @@
             });
         });
     </script>
-<p id=y17>
-    In 2017, Sydney witnessed the highest number of arrivals with a total of 94,928 people. Victoria, another major city in Australia, had slightly fewer arrivals but still a substantial number at 87,132 individuals. These figures underline the significance of these cities as major hubs for economic and cultural activities. Moving beyond the major cities, Queensland emerged as the regional area with the highest number of arrivals, with a total of 50,637 individuals. Western Australia also experienced a significant influx of arrivals, with a total of 35,702 individuals choosing it as their destination. In comparison, South Australia and the Northern Territory had a moderate number of arrivals, with 25,103 and 20,571 individuals, respectively. On the other hand, Tasmania had the lowest number of arrivals among the regional areas, with only 3,242 individuals choosing it as their destination. 
-    </p>
+<p id=y17>    In 2020, Sydney, one of Australia's largest and most important cities, had 7,002 arrivals, whereas Victoria, another major city, had only 2,000 arrivals. These numbers reflect a substantial decrease compared to previous years, mainly attributed to the COVID-19 pandemic and the accompanying travel restrictions. The lower figures suggest that the arrivals likely consist primarily of health officials and citizens returning to the cities. Looking beyond the major cities, the visualization shows that regional cities also experienced a decline in arrivals. Queensland had 999 arrivals, while Tasmania had a much lower number of 61 arrivals. Furthermore, Western Australia had 5,156 arrivals, and South Australia and the Northern Territory had 4,046 and 661 arrivals, respectively. </p>
 </body>
 </html>

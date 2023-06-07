@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+  <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="description" content="Data Visualisation"/>
+          <meta name="keywords" content="HTML, CSS, D3"/>
+          <meta name="author" content="Saborni"/>
+          <title>Migration in Australia</title>
+          <link rel="stylesheet" href="style.css">
+          <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+          <script src="//cdnjs.cloudflare.com/ajax/libs/d3-legend/1.1.0/d3-legend.js"></script>
+          <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <style>
+
+      .chart-line {
+        fill: none;
+        stroke-width: 2.5px;
+      }
+    
+      .axis text {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 12pt;
+        fill: whitesmoke;
+      }
+      .axis .label {
+        font-size: 15pt;
+      }
+
+      .x.axis path, .x.axis line {
+        fill: none;
+        stroke: whitesmoke;
+        shape-rendering: crispEdges;
+      }
+
+      .y.axis path {
+    display: none 
+}
+
+
+      .color-legend text {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 12pt;
+        fill: whitesmoke;
+      }
+
+      .tooltip {
+            position: absolute;
+            text-align: center;
+            padding: 12px;
+            font: 16px sans-serif;
+            background: #490be4;
+            border: 0px;
+            border-radius: 14px;
+            pointer-events: none;
+        }
+
+
+    </style>
+  </head>
+  <body>
+    <section class="header">
+      <nav class="menu">
+        <div class="links">
+          <ul>
+            <a href="home.html"><button>Home</button></a>
+             <a href="y17.html"> <button>Arrival & Departure</button></a>
+             <a href="Vic.html"> <button>Visa & Population Trends</button></a>
+          </ul>
+        </nav>
+        <hr>
+    </section>
+    <br>
+    <p>
+      <div class="buttons">
+         
+        <a href="y17.html"><button>2017</button></a>
+            <a href="y18.html"><button>2018</button></a>
+            <a href="y19.html"><button>2019</button></a>
+            <a href="y20.html"><button>2020</button></a>
+            <a href="y21.html"><button>2021</button></a>
+        <a href="Departure.html"><button>Departure</button></a>
+        
+        </div>
+      </p>
+      <h2>State Summary</h2>
+      <br>
+    <script>
+
+     
+    var tooltip = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
+
+      var outerWidth = 700;
+      var outerHeight = 400;
+      var margin = { left: 80, top: 5, right: 190, bottom: 60 };
+
+      var xColumn = "year";
+      var yColumn = "TotalDeparture";
+      var colorColumn = "state";
+      var lineColumn = colorColumn;
+
+      var xAxisLabelText = "Time";
+      var xAxisLabelOffset = 48;
+
+      var yAxisLabelText = " ";
+      var yAxisLabelOffset = 60;
+
+      var innerWidth  = outerWidth  - margin.left - margin.right;
+      var innerHeight = outerHeight - margin.top  - margin.bottom;
+
+      var svg = d3.select("body").append("svg")
+        .attr("width", outerWidth)
+        .attr("height", outerHeight);
+      var g = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      var xAxisG = g.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + innerHeight + ")")
+      var xAxisLabel = xAxisG.append("text")
+        .style("text-anchor", "middle")
+        .attr("transform", "translate(" + (innerWidth / 2) + "," + xAxisLabelOffset + ")")
+        .attr("class", "label")
+        .text(xAxisLabelText);
+
+      var yAxisG = g.append("g")
+        .attr("class", "y axis");
+      var yAxisLabel = yAxisG.append("text")
+        .style("text-anchor", "middle")
+        .attr("transform", "translate(-" + yAxisLabelOffset + "," + (innerHeight / 2) + ") rotate(-90)")
+        .attr("class", "label")
+        .text(yAxisLabelText);
+
+        var offset = innerWidth * 0.05;  
+var xScale = d3.time.scale().range([offset, innerWidth - offset]);
+
+var yScale = d3.scale.linear().range([innerHeight, 0]);
+      
+      var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
+        .outerTickSize(0);
+      var yAxis = d3.svg.axis().scale(yScale).orient("left")
+        .ticks(6)
+        .tickFormat(d3.format("s"))
+        .outerTickSize(0);
+
+      var colorLegendG = g.append("g")
+        .attr("class", "color-legend")
+        .attr("transform", "translate(460, 0)");
+
+
+
+      var siFormat = d3.format("s");
+      var customTickFormat = function (d){
+        return siFormat(d).replace("G", "B");
+      };
+
+      var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
+        .ticks(6)
+        .outerTickSize(0)
+        
+      var yAxis = d3.svg.axis().scale(yScale).orient("left")
+        .ticks(6)
+        .tickFormat(customTickFormat)
+        .outerTickSize(0)
+       
+      var line = d3.svg.line()
+        .x(function(d) { return xScale(d[xColumn]); })
+        .y(function(d) { return yScale(d[yColumn]); });
+
+
+var colorScale = d3.scale.category10();
+
+var yValues = [5000, 10000,15000, 20000];
+
+var linesGroup = g.append('g');
+
+
+var colorLegend = d3.legend.color()
+        .scale(colorScale)
+        .shapePadding(3)
+        .shapeWidth(15)
+        .shapeHeight(15)
+        .labelOffset(4);
+
+function render(data){
+
+  xScale.domain(d3.extent(data, function(d) { return d[xColumn]; }));
+yScale.domain([0, d3.max(data, function(d) { return d[yColumn]; })]);
+
+
+
+var circlesG = g.append("g")
+  .attr("class", "circles");
+
+  var circles = circlesG.selectAll(".data-circle")
+  .data(data)
+  .enter().append("circle")
+  .attr("class", "data-circle")
+  .attr("cx", function(d) { return xScale(d[xColumn]); })
+  .attr("cy", function(d) { return yScale(d[yColumn]); })
+  .attr("r", 4)
+  .style("fill", function(d) { return colorScale(d[colorColumn]); })
+  .style("stroke","white")
+  
+
+  var tooltip = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
+
+  circles.on("mouseover", function(d) {
+  tooltip.transition()
+    .duration(100)
+    .style("opacity", 0.9);
+  tooltip.html(d[yColumn])
+    .style("left", (d3.event.pageX + 10) + "px")
+    .style("top", (d3.event.pageY - 20) + "px");
+
+
+  var circleFillColor = d3.select(this).style("fill");
+  tooltip.style("background-color", circleFillColor);
+})
+.on("mouseout", function(d) {
+  tooltip.transition()
+    .duration(200)
+    .style("opacity", 0);
+});
+
+  var yValues = [5000, 10000, 15000, 20000];
+
+  var linesGroup = g.append('g');
+
+  linesGroup.selectAll('.horizontal-line')
+  .data(yValues)
+  .enter().append('line')
+  .attr('class', 'horizontal-line')
+  .attr('x1', 0)
+  .attr('x2', innerWidth)
+  .attr('y1', function(d) { return yScale(d); })
+  .attr('y2', function(d) { return yScale(d); })
+  .style('stroke', 'gray')
+  
+xAxisG.call(xAxis);
+yAxisG.call(yAxis);
+
+
+var nested = d3.nest()
+  .key(function (d){ return d[lineColumn]; })
+  .entries(data);
+
+colorScale.domain(nested.map(function (d){ return d.key; }));
+
+var paths = g.selectAll(".chart-line")
+    .data(nested)
+    .enter()
+    .append("path")
+    .attr("class", "chart-line animate");
+
+paths
+    .attr("d", function(d) { return line(d.values); })
+    .attr("stroke", function(d) { return colorScale(d.key); })
+    .transition() 
+    .duration(1000 ) 
+    .style("opacity", 1); 
+
+
+    colorLegendG.call(colorLegend);
+
+
+
+}
+      function type(d){
+        d.year = new Date(d.year);
+        d.TotalDeparture = +d.TotalDeparture;
+        return d;
+      }
+      d3.csv("Departure.csv", type, render);
+
+    </script>
+    
+    <p style=" float:right;width: 400px;height: 200px;margin-top: -50px; padding: 4%;      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    " >
+      In 2018 and 2017 Victoria has the highest number of Departures. However, New South Wales (NSW) recorded the highest number of departures, with approximately 25,000 individuals, surpassing all other states in 2019. The significant number of departures from NSW highlights its popularity as a departure point for travelers.It is important to note that in 2020, departures from all states experienced a sharp decline due to the implementation of border closures amid the global pandemic. These measures aimed to control the spread of the virus but had a considerable impact on travel activity.However, in 2021, there was a positive trend observed as the number of departures gradually increased for all states. This suggests a recovery in travel demand and indicates a more optimistic outlook for the tourism industry.    </p>
+  </body>
+</html>

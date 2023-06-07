@@ -23,7 +23,7 @@
         <hr>
     </section>
     <br>
-    <h1>Net Migration in Australia(2017) </h1>
+    <h1>Net Migration in Australia(2021) </h1>
     <p>
         <div class="buttons">
             <a href="y17.html"><button>2017</button></a>
@@ -72,7 +72,7 @@
         var path = d3.geoPath()
             .projection(projection);
 
-            d3.csv("y17.csv").then(function(data) {
+            d3.csv("y21.csv").then(function(data) {
                 var color = d3.scaleLinear()
   .domain([
     d3.min(data, function(d) { return parseFloat(d.value); }),
@@ -80,6 +80,12 @@
     d3.max(data, function(d) { return parseFloat(d.value); })
   ])
   .range(["lightgreen","yellow","red"]);
+
+
+
+  
+
+
 
 
             d3.json("aus_state.geojson").then(function(json) {
@@ -93,7 +99,7 @@
 
                         if (datastate == jsonstate) {
                             json.features[j].properties.value = datavalue;
-               
+                            break;
                         }
                     }
                 }
@@ -124,8 +130,6 @@
                             .duration(500)
                             .style("opacity", 0);
                     });
-
-
                     svg.selectAll("text")  
     .data(json.features)
     .enter()
@@ -149,8 +153,6 @@
             });
         });
     </script>
-<p id=y17>
-    In 2017, Sydney witnessed the highest number of arrivals with a total of 94,928 people. Victoria, another major city in Australia, had slightly fewer arrivals but still a substantial number at 87,132 individuals. These figures underline the significance of these cities as major hubs for economic and cultural activities. Moving beyond the major cities, Queensland emerged as the regional area with the highest number of arrivals, with a total of 50,637 individuals. Western Australia also experienced a significant influx of arrivals, with a total of 35,702 individuals choosing it as their destination. In comparison, South Australia and the Northern Territory had a moderate number of arrivals, with 25,103 and 20,571 individuals, respectively. On the other hand, Tasmania had the lowest number of arrivals among the regional areas, with only 3,242 individuals choosing it as their destination. 
-    </p>
+<p id=y17>    In 2021, Sydney received a total of 12,017 arrivals, while Victoria had 8,204 arrivals. These numbers are higher compared to the previous year, 2020, as COVID-19 restrictions were minimized towards the end of 2021, leading to increased travel and mobility. Among the regional cities, Queensland recorded 3,332 arrivals, while Tasmania had 746 arrivals. The other regional areas, such as Western Australia, South Australia, and Northern Territory, had arrivals of 2,949, 2,351, and 1,600, respectively. These regional areas also experienced a relatively higher number of arrivals as COVID-19 restrictions eased, enabling people to travel more freely. However, it is worth noting that the overall arrival numbers in 2021 are still lower compared to the pre-pandemic years of 2017-2019. This indicates that while there has been some recovery and increased travel activity, the impact of COVID-19 is still evident in the reduced numbers.</p>
 </body>
 </html>

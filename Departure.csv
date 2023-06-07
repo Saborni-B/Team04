@@ -1,0 +1,36 @@
+state,year,TotalDeparture
+New South Wales,2017,11539
+New South Wales,2018,15161
+New South Wales,2019,21672
+New South Wales,2020,6751
+New South Wales,2021,20887
+Victoria,2017,17639
+Victoria,2018,20193
+Victoria,2019,14316
+Victoria,2020,5800
+Victoria,2021,12198
+Western Australia,2017,10010
+Western Australia,2018,13934
+Western Australia,2019,11300
+Western Australia,2020,2500
+Western Australia,2021,6451
+Queensland,2017,11989
+Queensland,2018,17795
+Queensland,2019,24698
+Queensland,2020,4800
+Queensland,2021,22348
+South Australia,2017,6778
+South Australia,2018,5151
+South Australia,2019,4500
+South Australia,2020,2000
+South Australia,2021,2500
+Tasmania,2017,1522
+Tasmania,2018,2382
+Tasmania,2019,2008
+Tasmania,2020,1000
+Tasmania,2021,3200
+Northern Territory, 2017, 2867
+Northern Territory, 2018, 3831
+Northern Territory, 2019, 5000
+Northern Territory, 2020, 3800
+Northern Territory, 2021, 3900
